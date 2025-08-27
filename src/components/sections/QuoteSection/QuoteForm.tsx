@@ -18,7 +18,7 @@ type FormData = {
   message: string;
 };
 
-export function ContactForm() {
+export function QuoteForm() {
   const t = useTranslations('Contact');
   const [formData, setFormData] = useState<FormData>({
     fullName: '',

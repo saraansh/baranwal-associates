@@ -48,11 +48,11 @@ export default async function Index(props: IIndexProps) {
       {/* Projects Section */}
       <ProjectsSection />
 
-      {/* Quote Section */}
-      <QuoteSection />
-
       {/* Contact Section */}
       <ContactSection />
+
+      {/* Quote Section */}
+      <QuoteSection />
 
       {/* Footer Section */}
       <FooterSection />

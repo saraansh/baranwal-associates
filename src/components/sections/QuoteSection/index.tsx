@@ -1,13 +1,14 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { ContactForm } from './ContactSection/ContactForm';
+import { QuoteForm } from './QuoteForm';
+import { QuoteStats } from './QuoteStats';
 
 export function QuoteSection() {
   const t = useTranslations('Quote');
 
   return (
-    <section id="quote" className="pattern-circuit bg-background py-20 lg:py-32">
+    <section id="quote" className="pattern-blueprint bg-background py-20 lg:py-32">
       <div className="container mx-auto px-4 lg:px-8">
         <div className="mx-auto max-w-4xl">
           {/* Section Header */}
@@ -22,8 +23,13 @@ export function QuoteSection() {
           </div>
 
           {/* Quote Form */}
-          <div className="mx-auto max-w-2xl">
-            <ContactForm />
+          <div className="mx-auto mb-16 max-w-2xl">
+            <QuoteForm />
+          </div>
+
+          {/* Quick Stats Section */}
+          <div className="mb-16">
+            <QuoteStats />
           </div>
         </div>
       </div>

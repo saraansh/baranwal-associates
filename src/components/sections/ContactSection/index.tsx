@@ -3,7 +3,6 @@
 import { useTranslations } from 'next-intl';
 import { ContactInfo } from './ContactInfo';
 import { ContactMap } from './ContactMap';
-import { ContactStats } from './ContactStats';
 
 export function ContactSection() {
   const t = useTranslations('Contact');
@@ -33,10 +32,6 @@ export function ContactSection() {
             <ContactMap />
           </div>
 
-          {/* Quick Stats Section */}
-          <div className="mb-16">
-            <ContactStats />
-          </div>
         </div>
       </div>
     </section>

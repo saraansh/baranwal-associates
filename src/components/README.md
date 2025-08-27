@@ -34,12 +34,10 @@ Common reusable components that can be used throughout the application.
 ### `/sections/`
 Page sections used in marketing pages. Each section is broken down into smaller, focused components:
 
-#### `/ContactSection/`
+#### `/HeroSection/`
 - `index.tsx` - Main container component
-- `ContactForm.tsx` - Contact form with validation and submission
-- `ContactInfo.tsx` - Contact information and business hours
-- `ContactMap.tsx` - Google Maps integration
-- `ContactStats.tsx` - Statistics and "Why Choose Us" section
+- `HeroContent.tsx` - Text content and call-to-action
+- `HeroBackground.tsx` - Background animations and geometric elements
 
 #### `/ProjectsSection/`
 - `index.tsx` - Main container component
@@ -49,10 +47,15 @@ Page sections used in marketing pages. Each section is broken down into smaller,
 - `ProjectModal.tsx` - Drawer for project details
 - `projectsData.ts` - Project data and types
 
-#### `/HeroSection/`
+#### `/ContactSection/`
 - `index.tsx` - Main container component
-- `HeroContent.tsx` - Text content and call-to-action
-- `HeroBackground.tsx` - Background animations and geometric elements
+- `ContactInfo.tsx` - Contact information and business hours
+- `ContactMap.tsx` - Google Maps integration
+
+### `/QuoteSection/`
+- `index.tsx` - Main container component
+- `ContactForm.tsx` - Contact form with validation and submission
+- `ContactStats.tsx` - Statistics and "Why Choose Us" section
 
 #### Other Sections
 - `AboutSection.tsx` - About us section

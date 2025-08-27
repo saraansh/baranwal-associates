@@ -3,7 +3,7 @@
 import { Clock, MessageCircle, Trophy, Users } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-export function ContactStats() {
+export function QuoteStats() {
   return (
     <Card className="border-2 border-border bg-gradient-to-br from-primary/5 to-accent/5 shadow-lg">
       <CardHeader>
