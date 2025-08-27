@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
 import { DemoBanner } from '@/components/DemoBanner';
 import { LocaleSwitcher } from '@/components/LocaleSwitcher';
+import { ThemeToggleButton } from '@/components/ThemeToggleButton';
 import { BaseTemplate } from '@/templates/BaseTemplate';
 
 export default async function Layout(props: {
@@ -85,6 +86,10 @@ export default async function Layout(props: {
 
             <li>
               <LocaleSwitcher />
+            </li>
+
+            <li>
+              <ThemeToggleButton />
             </li>
           </>
         )}
