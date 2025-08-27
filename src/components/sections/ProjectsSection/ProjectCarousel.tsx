@@ -16,6 +16,7 @@ export function ProjectCarousel({ projects, onProjectClick }: ProjectCarouselPro
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
+  const [isClient, setIsClient] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -40,11 +41,21 @@ export function ProjectCarousel({ projects, onProjectClick }: ProjectCarouselPro
     return 2; // 2 rows × 1 column (sm screens)
   };
 
-  const [itemsPerPage, setItemsPerPage] = useState(() => getItemsPerPage());
+  // Use a fixed default for SSR to prevent hydration mismatch
+  const [itemsPerPage, setItemsPerPage] = useState(6);
   const totalPages = Math.ceil(projects.length / itemsPerPage);
+
+  // Set client flag after mount
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   // Update items per page on window resize
   useEffect(() => {
+    if (!isClient) {
+      return;
+    }
+
     const handleResize = () => {
       const newItemsPerPage = getItemsPerPage();
       setItemsPerPage(newItemsPerPage);
@@ -57,7 +68,7 @@ export function ProjectCarousel({ projects, onProjectClick }: ProjectCarouselPro
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [currentPage, projects.length]);
+  }, [currentPage, projects.length, isClient]);
 
   // Get current page projects
   const currentProjects = projects.slice(
@@ -163,6 +174,25 @@ export function ProjectCarousel({ projects, onProjectClick }: ProjectCarouselPro
       document.body.style.cursor = '';
     };
   }, [isDragging]);
+
+  // Don't render until client-side hydration is complete to prevent mismatch
+  if (!isClient) {
+    return (
+      <div className="relative w-full" role="region" aria-label="Projects carousel">
+        <div className="relative overflow-hidden px-4 py-2">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+            {projects.slice(0, 6).map(project => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                onCardClick={onProjectClick}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
