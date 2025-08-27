@@ -57,7 +57,7 @@ export function ProjectsSection() {
   }, [isModalOpen]);
 
   return (
-    <section id="projects" className="bg-background py-20 lg:py-32">
+    <section id="projects" className="pattern-building-blocks bg-gradient-to-br from-background via-secondary/10 to-accent/5 py-20 lg:py-32">
       <div className="container mx-auto px-4 lg:px-8">
         <div className="mx-auto max-w-7xl">
           {/* Section Header */}

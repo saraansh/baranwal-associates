@@ -66,6 +66,9 @@ export function ProjectCarousel({ projects, onProjectClick }: ProjectCarouselPro
       }
     };
 
+    // Set initial items per page
+    handleResize();
+
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, [currentPage, projects.length, isClient]);
@@ -235,6 +238,33 @@ export function ProjectCarousel({ projects, onProjectClick }: ProjectCarouselPro
               onCardClick={onProjectClick}
             />
           ))}
+          {/* Add empty divs to ensure grid alignment when items don't fill complete rows */}
+          {(() => {
+            const itemsInCurrentPage = currentProjects.length;
+            const columnsPerRow = (() => {
+              if (typeof window === 'undefined') {
+                return 3;
+              }
+              const width = window.innerWidth;
+              if (width >= 1536) {
+                return 4; // 2xl
+              }
+              if (width >= 1024) {
+                return 3; // lg
+              }
+              if (width >= 768) {
+                return 2; // md
+              }
+              return 1; // sm
+            })();
+            const rowsPerPage = 2;
+            const totalSlots = rowsPerPage * columnsPerRow;
+            const emptySlots = totalSlots - itemsInCurrentPage;
+
+            return Array.from({ length: emptySlots }, (_, index) => (
+              <div key={`empty-${index}`} className="hidden" />
+            ));
+          })()}
         </div>
       </div>
 

@@ -86,6 +86,10 @@
     "email": "info@baranwalassociates.com",
     "whatsapp": "+91 98765 43210"
   },
+  "Quote": {
+    "title": "Request a Quote",
+    "subtitle": "Ready to bring your vision to life? Let's discuss your project and provide you with a detailed quote."
+  },
   "Footer": {
     "company_description": "Leading architectural firm specializing in innovative design solutions that transform spaces and inspire communities.",
     "services_title": "Services",

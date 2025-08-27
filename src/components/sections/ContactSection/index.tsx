@@ -1,7 +1,6 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { ContactForm } from './ContactForm';
 import { ContactInfo } from './ContactInfo';
 import { ContactMap } from './ContactMap';
 import { ContactStats } from './ContactStats';
@@ -32,11 +31,6 @@ export function ContactSection() {
           {/* Maps Section */}
           <div className="mb-16">
             <ContactMap />
-          </div>
-
-          {/* Request a Quote Section */}
-          <div className="mb-16">
-            <ContactForm />
           </div>
 
           {/* Quick Stats Section */}

@@ -42,13 +42,13 @@ export function ProjectModal({
 
   return (
     <Drawer open={isOpen} onOpenChange={onClose}>
-      <DrawerContent>
-        <DrawerHeader>
+      <DrawerContent className="max-h-[90vh]">
+        <DrawerHeader className="flex-shrink-0">
           <DrawerTitle className="text-xl font-bold text-foreground">
             {project.title}
           </DrawerTitle>
         </DrawerHeader>
-        <div className="px-4 pb-4">
+        <div className="flex-1 overflow-y-auto px-4 pb-4">
           <ProjectModalContent
             project={project}
             modalImageIndex={modalImageIndex}

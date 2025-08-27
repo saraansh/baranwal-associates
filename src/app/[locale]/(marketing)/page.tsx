@@ -6,6 +6,7 @@ import { ContactSection } from '@/components/sections/ContactSection';
 import { FooterSection } from '@/components/sections/FooterSection';
 import { HeroSection } from '@/components/sections/HeroSection';
 import { ProjectsSection } from '@/components/sections/ProjectsSection';
+import { QuoteSection } from '@/components/sections/QuoteSection';
 import { ServicesSection } from '@/components/sections/ServicesSection';
 import { TestimonialsSection } from '@/components/sections/TestimonialsSection';
 
@@ -46,6 +47,9 @@ export default async function Index(props: IIndexProps) {
 
       {/* Projects Section */}
       <ProjectsSection />
+
+      {/* Quote Section */}
+      <QuoteSection />
 
       {/* Contact Section */}
       <ContactSection />

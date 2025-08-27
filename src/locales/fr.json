@@ -86,6 +86,10 @@
     "email": "info@baranwalassociates.com",
     "whatsapp": "+91 98765 43210"
   },
+  "Quote": {
+    "title": "Demander un devis",
+    "subtitle": "Prêt à donner vie à votre vision ? Discutons de votre projet et fournissons-vous un devis détaillé."
+  },
   "Footer": {
     "company_description": "Cabinet d'architecture leader spécialisé dans les solutions de design innovantes qui transforment les espaces et inspirent les communautés.",
     "services_title": "Services",

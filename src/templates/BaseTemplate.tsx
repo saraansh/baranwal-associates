@@ -92,7 +92,7 @@ export const BaseTemplate = (props: {
               {props.rightNav || (
                 <>
                   <Button
-                    onClick={() => scrollToSection('contact')}
+                    onClick={() => scrollToSection('quote')}
                     className="hidden sm:inline-flex"
                     size="sm"
                   >
@@ -167,7 +167,7 @@ export const BaseTemplate = (props: {
                   {props.rightNav || (
                     <>
                       <Button
-                        onClick={() => scrollToSection('contact')}
+                        onClick={() => scrollToSection('quote')}
                         className="mb-3 w-full"
                         size="sm"
                       >
