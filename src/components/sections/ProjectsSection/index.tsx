@@ -1,17 +1,21 @@
 'use client';
 
 import type { Project } from './projectsData';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { ProjectCarousel } from './ProjectCarousel';
 import { ProjectModal } from './ProjectModal';
-import { projectsData } from './projectsData';
+import { getProjectsData } from './projectsData';
 
 export function ProjectsSection() {
   const t = useTranslations('Projects');
+  const locale = useLocale();
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalImageIndex, setModalImageIndex] = useState(0);
+
+  // Get localized project data
+  const projectsData = getProjectsData(locale);
 
   const handleProjectClick = (project: Project) => {
     setSelectedProject(project);
