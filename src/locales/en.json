@@ -2,74 +2,140 @@
   "RootLayout": {
     "home_link": "Home",
     "about_link": "About",
-    "counter_link": "Counter",
-    "portfolio_link": "Portfolio",
-    "sign_in_link": "Sign in",
-    "sign_up_link": "Sign up"
+    "services_link": "Services",
+    "collection_link": "Collection",
+    "contact_link": "Contact",
+    "get_quote": "Get Quote"
   },
   "BaseTemplate": {
-    "description": "Starter code for your Nextjs Boilerplate with Tailwind CSS",
-    "made_with": "Made with <author></author>."
+    "description": "Premier architectural design and construction services",
+    "made_with": "Crafted with passion by <author></author>."
   },
   "Index": {
-    "meta_title": "Next.js Boilerplate Presentation",
-    "meta_description": "Next js Boilerplate is the perfect starter code for your project. Build your React application with the Next.js framework.",
-    "sponsors_title": "Sponsors"
+    "meta_title": "Baranwal Associates - Transforming Dreams Into Reality",
+    "meta_description": "Premier architectural design and construction services. We create exceptional spaces that blend functionality with aesthetic excellence."
   },
-  "Counter": {
-    "meta_title": "Counter",
-    "meta_description": "An example of DB operation",
-    "security_powered_by": "Security, bot detection and rate limiting powered by"
-  },
-  "CounterForm": {
-    "presentation": "The counter is stored in the database and incremented by the value you provide.",
-    "label_increment": "Increment by",
-    "button_increment": "Increment",
-    "error_increment_range": "Value must be between 1 and 3"
-  },
-  "CurrentCount": {
-    "count": "Count: {count}"
+  "Hero": {
+    "title": "Transforming Dreams Into Reality",
+    "subtitle": "We create exceptional architectural spaces that blend functionality with aesthetic excellence, bringing your vision to life.",
+    "cta_button": "Go to Collection",
+    "scroll_hint": "Scroll to explore"
   },
   "About": {
-    "meta_title": "About",
-    "meta_description": "About page description",
-    "about_paragraph": "Welcome to our About page! We are a team of passionate individuals dedicated to creating amazing software.",
-    "translation_powered_by": "Translation powered by"
+    "title": "About Baranwal Associates",
+    "chief_architect_name": "Er. Anand Prakash Baranwal",
+    "chief_architect_title": "Principal Architect & Founder",
+    "chief_architect_message": "With over two decades of experience in architectural design and urban planning, I believe that every space tells a story. Our mission is to craft environments that not only meet functional requirements but also inspire and elevate the human experience. At Baranwal Associates, we don't just design buildings; we create lasting legacies that stand the test of time.",
+    "experience_years": "20+ Years",
+    "projects_completed": "500+",
+    "client_satisfaction": "99%",
+    "team_members": "25+"
   },
-  "Portfolio": {
-    "meta_title": "Portfolio",
-    "meta_description": "Welcome to my portfolio page!",
-    "presentation": "Welcome to my portfolio page! Here you will find a carefully curated collection of my work and accomplishments. Through this portfolio, I'm to showcase my expertise, creativity, and the value I can bring to your projects.",
-    "portfolio_name": "Portfolio {name}",
-    "error_reporting_powered_by": "Error reporting powered by",
-    "coverage_powered_by": "Code coverage powered by"
+  "Services": {
+    "title": "Premium Services",
+    "subtitle": "Comprehensive architectural solutions tailored to your needs",
+    "architectural": {
+      "title": "Architectural Design",
+      "description": "Complete architectural design services from concept to construction"
+    },
+    "interior": {
+      "title": "Interior Design",
+      "description": "Sophisticated interior spaces that reflect your lifestyle and values"
+    },
+    "planning": {
+      "title": "Urban Planning",
+      "description": "Strategic planning and development for sustainable communities"
+    },
+    "valuation": {
+      "title": "Property Valuation",
+      "description": "Professional property assessment and valuation services"
+    }
   },
-  "PortfolioSlug": {
-    "meta_title": "Portfolio {slug}",
-    "meta_description": "Portfolio {slug} description",
-    "header": "Portfolio {slug}",
-    "content": "Created a set of promotional materials and branding elements for a corporate event. Crafted a visually unified theme, encompassing a logo, posters, banners, and digital assets. Integrated the client's brand identity while infusing it with a contemporary and innovative approach.",
-    "code_review_powered_by": "Code review powered by"
+  "Projects": {
+    "title": "Our Creative Projects",
+    "subtitle": "Discover our portfolio of exceptional architectural achievements",
+    "view_details": "View Details",
+    "close": "Close"
   },
-  "SignIn": {
-    "meta_title": "Sign in",
-    "meta_description": "Seamlessly sign in to your account with our user-friendly login process."
+  "Testimonials": {
+    "title": "Premium Achievements",
+    "subtitle": "Numbers that speak for our excellence",
+    "projects_completed": "3000+",
+    "projects_completed_label": "Projects Completed",
+    "satisfied_clients": "3000+",
+    "satisfied_clients_label": "Satisfied Clients",
+    "years_experience": "38",
+    "years_experience_label": "Years Experience",
+    "success_rate": "99%",
+    "success_rate_label": "Projects On Time & Budget"
   },
-  "SignUp": {
-    "meta_title": "Sign up",
-    "meta_description": "Effortlessly create an account through our intuitive sign-up process."
+  "Contact": {
+    "title": "Get In Touch",
+    "subtitle": "Ready to bring your vision to life? Let's discuss your project",
+    "form_title": "Request a Quote",
+    "info_title": "Contact Information",
+    "name_label": "Full Name",
+    "email_label": "Email Address",
+    "phone_label": "Phone Number",
+    "project_type_label": "Project Type",
+    "budget_label": "Budget Range",
+    "message_label": "Project Description",
+    "submit_button": "Send Quote Request",
+    "address": "123 Architecture Lane, Design District, Mumbai 400001",
+    "phone": "+91 98765 43210",
+    "email": "info@baranwalassociates.com",
+    "whatsapp": "+91 98765 43210"
+  },
+  "Footer": {
+    "company_description": "Leading architectural firm specializing in innovative design solutions that transform spaces and inspire communities.",
+    "services_title": "Services",
+    "services": {
+      "architectural_design": "Architectural Design",
+      "interior_design": "Interior Design",
+      "urban_planning": "Urban Planning",
+      "property_valuation": "Property Valuation"
+    },
+    "quick_links_title": "Quick Links",
+    "quick_links": {
+      "home": "Home",
+      "about": "About",
+      "services": "Services",
+      "portfolio": "Portfolio",
+      "contact": "Contact",
+      "careers": "Careers"
+    },
+    "contact_title": "Contact Info",
+    "copyright": "© {year} Baranwal Associates. All rights reserved."
+  },
+  "WhatsApp": {
+    "tooltip": "Chat with us on WhatsApp",
+    "message": "Hello! I'm interested in your architectural services."
   },
   "Dashboard": {
     "meta_title": "Dashboard",
-    "hello_message": "Hello {email}!",
-    "alternative_message": "Want to build your SaaS faster using the same stack? Try <url></url>."
+    "hello_message": "Hello, {email}!",
+    "alternative_message": "Welcome to our application. You can explore our <url>Next.js Boilerplate SaaS</url> for more features."
   },
-  "UserProfile": {
-    "meta_title": "User Profile"
+  "SignIn": {
+    "meta_title": "Sign In",
+    "meta_description": "Sign in to your account",
+    "title": "Sign In",
+    "subtitle": "Welcome back to your account"
+  },
+  "SignUp": {
+    "meta_title": "Sign Up",
+    "meta_description": "Create your account",
+    "title": "Sign Up",
+    "subtitle": "Create your account"
   },
   "DashboardLayout": {
     "dashboard_link": "Dashboard",
-    "user_profile_link": "Manage your account",
-    "sign_out": "Sign out"
+    "user_profile_link": "User Profile",
+    "sign_out": "Sign Out"
+  },
+  "UserProfile": {
+    "meta_title": "User Profile",
+    "title": "User Profile",
+    "subtitle": "Manage your account settings"
   }
 }

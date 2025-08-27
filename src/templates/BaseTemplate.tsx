@@ -1,61 +1,192 @@
+'use client';
+
+import { Building2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { AppConfig } from '@/utils/AppConfig';
+import { useState } from 'react';
+import { LocaleSwitcher, ThemeToggleButton } from '@/components/layout';
+import { Button } from '@/components/ui/button';
+import { AppConfig } from '@/utils/config';
 
 export const BaseTemplate = (props: {
-  leftNav: React.ReactNode;
-  rightNav?: React.ReactNode;
   children: React.ReactNode;
+  leftNav?: React.ReactNode;
+  rightNav?: React.ReactNode;
 }) => {
-  const t = useTranslations('BaseTemplate');
+  const t = useTranslations('RootLayout');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+    setIsMobileMenuOpen(false);
+  };
 
   return (
-    <div className="w-full px-1 text-gray-700 antialiased">
-      <div className="mx-auto max-w-screen-md">
-        <header className="border-b border-gray-300">
-          <div className="pt-16 pb-8">
-            <h1 className="text-3xl font-bold text-gray-900">
-              {AppConfig.name}
-            </h1>
-            <h2 className="text-xl">{t('description')}</h2>
-          </div>
+    <div className="min-h-screen bg-background text-foreground">
+      {/* Fixed Header */}
+      <header className="fixed top-0 right-0 left-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
+        <div className="container mx-auto px-4 lg:px-8">
+          <div className="flex h-16 items-center justify-between">
+            {/* Logo and Company Name */}
+            <div className="flex items-center space-x-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
+                <Building2 className="h-6 w-6 text-primary-foreground" />
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-foreground">
+                  {AppConfig.name}
+                </h1>
+                <p className="hidden text-xs text-muted-foreground sm:block">
+                  {AppConfig.tagline}
+                </p>
+              </div>
+            </div>
 
-          <div className="flex justify-between">
-            <nav aria-label="Main navigation">
-              <ul className="flex flex-wrap gap-x-5 text-xl">
-                {props.leftNav}
-              </ul>
+            {/* Desktop Navigation */}
+            <nav className="hidden items-center space-x-8 md:flex">
+              {props.leftNav || (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => scrollToSection('home')}
+                    className="text-sm font-medium text-foreground transition-colors hover:text-primary"
+                  >
+                    {t('home_link')}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => scrollToSection('about')}
+                    className="text-sm font-medium text-foreground transition-colors hover:text-primary"
+                  >
+                    {t('about_link')}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => scrollToSection('services')}
+                    className="text-sm font-medium text-foreground transition-colors hover:text-primary"
+                  >
+                    {t('services_link')}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => scrollToSection('projects')}
+                    className="text-sm font-medium text-foreground transition-colors hover:text-primary"
+                  >
+                    {t('collection_link')}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => scrollToSection('contact')}
+                    className="text-sm font-medium text-foreground transition-colors hover:text-primary"
+                  >
+                    {t('contact_link')}
+                  </button>
+                </>
+              )}
             </nav>
 
-            <nav>
-              <ul className="flex flex-wrap gap-x-5 text-xl">
-                {props.rightNav}
-              </ul>
-            </nav>
-          </div>
-        </header>
+            {/* Right Side Controls */}
+            <div className="flex items-center space-x-4">
+              {props.rightNav || (
+                <>
+                  <Button
+                    onClick={() => scrollToSection('contact')}
+                    className="hidden sm:inline-flex"
+                    size="sm"
+                  >
+                    {t('get_quote')}
+                  </Button>
 
-        <main>{props.children}</main>
+                  <div className="hidden sm:block">
+                    <LocaleSwitcher />
+                  </div>
+                </>
+              )}
 
-        <footer className="border-t border-gray-300 py-8 text-center text-sm">
-          {`© Copyright ${new Date().getFullYear()} ${AppConfig.name}. `}
-          {t.rich('made_with', {
-            author: () => (
-              <a
-                href="https://creativedesignsguru.com"
-                className="text-blue-700 hover:border-b-2 hover:border-blue-700"
+              <ThemeToggleButton />
+
+              {/* Mobile Menu Button */}
+              <button
+                type="button"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="flex h-6 w-6 flex-col items-center justify-center space-y-1 md:hidden"
               >
-                CreativeDesignsGuru
-              </a>
-            ),
-          })}
-          {/*
-           * PLEASE READ THIS SECTION
-           * I'm an indie maker with limited resources and funds, I'll really appreciate if you could have a link to my website.
-           * The link doesn't need to appear on every pages, one link on one page is enough.
-           * For example, in the `About` page. Thank you for your support, it'll mean a lot to me.
-           */}
-        </footer>
-      </div>
+                <span className={`h-0.5 w-6 bg-foreground transition-all ${isMobileMenuOpen ? 'translate-y-2 rotate-45' : ''}`} />
+                <span className={`h-0.5 w-6 bg-foreground transition-all ${isMobileMenuOpen ? 'opacity-0' : ''}`} />
+                <span className={`h-0.5 w-6 bg-foreground transition-all ${isMobileMenuOpen ? '-translate-y-2 -rotate-45' : ''}`} />
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile Navigation Menu */}
+          {isMobileMenuOpen && (
+            <div className="border-t border-border py-4 md:hidden">
+              <nav className="flex flex-col space-y-4">
+                {props.leftNav || (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => scrollToSection('home')}
+                      className="text-left text-sm font-medium text-foreground transition-colors hover:text-primary"
+                    >
+                      {t('home_link')}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => scrollToSection('about')}
+                      className="text-left text-sm font-medium text-foreground transition-colors hover:text-primary"
+                    >
+                      {t('about_link')}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => scrollToSection('services')}
+                      className="text-left text-sm font-medium text-foreground transition-colors hover:text-primary"
+                    >
+                      {t('services_link')}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => scrollToSection('projects')}
+                      className="text-left text-sm font-medium text-foreground transition-colors hover:text-primary"
+                    >
+                      {t('collection_link')}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => scrollToSection('contact')}
+                      className="text-left text-sm font-medium text-foreground transition-colors hover:text-primary"
+                    >
+                      {t('contact_link')}
+                    </button>
+                  </>
+                )}
+                <div className="border-t border-border pt-2">
+                  {props.rightNav || (
+                    <>
+                      <Button
+                        onClick={() => scrollToSection('contact')}
+                        className="mb-3 w-full"
+                        size="sm"
+                      >
+                        {t('get_quote')}
+                      </Button>
+                      <LocaleSwitcher />
+                    </>
+                  )}
+                </div>
+              </nav>
+            </div>
+          )}
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="pt-16">
+        {props.children}
+      </main>
     </div>
   );
 };

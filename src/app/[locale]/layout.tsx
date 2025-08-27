@@ -3,8 +3,7 @@ import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { PostHogProvider } from '@/components/analytics/PostHogProvider';
-import { DemoBadge } from '@/components/DemoBadge';
-import { ThemeProvider } from '@/components/ThemeProvider';
+import { ThemeProvider } from '@/components/layout';
 import { routing } from '@/libs/I18nRouting';
 import '@/styles/global.css';
 
@@ -57,12 +56,12 @@ export default async function RootLayout(props: {
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
+          themes={['light', 'dark', 'nature', 'dawn', 'dusk', 'system']}
         >
           <NextIntlClientProvider>
             <PostHogProvider>
               {props.children}
             </PostHogProvider>
-            <DemoBadge />
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>

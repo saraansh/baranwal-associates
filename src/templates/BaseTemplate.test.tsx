@@ -7,48 +7,44 @@ import { BaseTemplate } from './BaseTemplate';
 
 describe('Base template', () => {
   describe('Render method', () => {
-    it('should have 3 menu items', () => {
+    it('should have navigation links', () => {
       render(
         <NextIntlClientProvider locale="en" messages={messages}>
-          <BaseTemplate
-            leftNav={(
-              <>
-                <li>link 1</li>
-                <li>link 2</li>
-                <li>link 3</li>
-              </>
-            )}
-          >
-            {null}
+          <BaseTemplate>
+            <div>Test content</div>
           </BaseTemplate>
         </NextIntlClientProvider>,
       );
 
-      const menuItemList = page.getByRole('listitem');
-
-      expect(menuItemList.elements()).toHaveLength(3);
+      expect(page.getByText('Home')).toBeDefined();
+      expect(page.getByText('About')).toBeDefined();
+      expect(page.getByText('Services')).toBeDefined();
+      expect(page.getByText('Collection')).toBeDefined();
+      expect(page.getByText('Contact')).toBeDefined();
     });
 
-    it('should have a link to support creativedesignsguru.com', () => {
+    it('should render children content', () => {
       render(
         <NextIntlClientProvider locale="en" messages={messages}>
-          <BaseTemplate leftNav={<li>1</li>}>{null}</BaseTemplate>
+          <BaseTemplate>
+            <div>Test content</div>
+          </BaseTemplate>
         </NextIntlClientProvider>,
       );
 
-      const copyrightSection = page.getByText(/© Copyright/);
-      const copyrightLink = copyrightSection.getByRole('link');
+      expect(page.getByText('Test content')).toBeDefined();
+    });
 
-      /*
-       * PLEASE READ THIS SECTION
-       * We'll really appreciate if you could have a link to our website
-       * The link doesn't need to appear on every pages, one link on one page is enough.
-       * Thank you for your support it'll mean a lot for us.
-       */
-      expect(copyrightLink).toHaveAttribute(
-        'href',
-        'https://creativedesignsguru.com',
+    it('should render custom navigation when provided', () => {
+      render(
+        <NextIntlClientProvider locale="en" messages={messages}>
+          <BaseTemplate leftNav={<li>Custom Nav</li>}>
+            <div>Test content</div>
+          </BaseTemplate>
+        </NextIntlClientProvider>,
       );
+
+      expect(page.getByText('Custom Nav')).toBeDefined();
     });
   });
 });

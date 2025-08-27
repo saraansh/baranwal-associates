@@ -1,41 +1,38 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { NextIntlClientProvider } from 'next-intl';
-import messages from '@/locales/en.json';
 import { BaseTemplate } from './BaseTemplate';
 
-const meta = {
-  title: 'Example/BaseTemplate',
+const meta: Meta<typeof BaseTemplate> = {
+  title: 'Templates/BaseTemplate',
   component: BaseTemplate,
   parameters: {
     layout: 'fullscreen',
   },
-  decorators: [
-    Story => (
-      <NextIntlClientProvider locale="en" messages={messages}>
-        <Story />
-      </NextIntlClientProvider>
-    ),
-  ],
-} satisfies Meta<typeof BaseTemplate>;
+  tags: ['autodocs'],
+  argTypes: {
+    children: {
+      control: 'text',
+    },
+  },
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const BaseWithReactComponent: Story = {
+export const Default: Story = {
   args: {
-    children: <div>Children node</div>,
-    leftNav: (
-      <>
-        <li>Link 1</li>
-        <li>Link 2</li>
-      </>
-    ),
+    children: <div>Main content goes here</div>,
   },
 };
 
-export const BaseWithString: Story = {
+export const WithCustomNavigation: Story = {
   args: {
-    ...BaseWithReactComponent.args,
-    children: 'String',
+    children: <div>Main content goes here</div>,
+    leftNav: (
+      <>
+        <li>Custom Link 1</li>
+        <li>Custom Link 2</li>
+        <li>Custom Link 3</li>
+      </>
+    ),
   },
 };
