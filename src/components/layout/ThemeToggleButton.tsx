@@ -31,7 +31,7 @@ export function ThemeToggleButton() {
         <DropdownMenuItem onClick={() => setTheme('dark')}>
           Dark
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme('nature')}>
+        {/* <DropdownMenuItem onClick={() => setTheme('nature')}>
           Nature
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme('dawn')}>
@@ -39,7 +39,7 @@ export function ThemeToggleButton() {
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme('dusk')}>
           Dusk
-        </DropdownMenuItem>
+        </DropdownMenuItem> */}
         <DropdownMenuItem onClick={() => setTheme('system')}>
           System
         </DropdownMenuItem>
