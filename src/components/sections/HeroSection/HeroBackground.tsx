@@ -25,7 +25,6 @@ export function HeroBackground() {
         <div className="absolute right-20 bottom-16 h-32 w-32 rotate-45 animate-bounce border-2 border-muted/30 bg-muted/15 backdrop-blur-sm" style={{ animationDuration: '4s', animationDelay: '2.3s' }} />
 
         {/* Additional floating elements */}
-        <div className="absolute top-1/2 left-1/4 h-16 w-16 rotate-90 animate-pulse border border-primary/40 bg-primary/5 backdrop-blur-sm" style={{ animationDuration: '6s', animationDelay: '0.8s' }} />
         <div className="absolute top-1/3 right-1/3 h-12 w-12 -rotate-45 animate-bounce border border-accent/50 bg-accent/8 backdrop-blur-sm" style={{ animationDuration: '3.5s', animationDelay: '1.2s' }} />
         <div className="absolute bottom-1/3 left-1/2 h-20 w-20 rotate-180 animate-pulse border border-secondary/40 bg-secondary/8 backdrop-blur-sm" style={{ animationDuration: '7s', animationDelay: '0.4s' }} />
       </div>
