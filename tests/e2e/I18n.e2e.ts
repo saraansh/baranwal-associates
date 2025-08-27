@@ -6,7 +6,7 @@ test.describe('I18n', () => {
       await page.goto('/');
 
       await expect(
-        page.getByRole('heading', { name: 'Boilerplate Code for Your Next.js Project with Tailwind CSS' }),
+        page.getByRole('heading', { name: 'Transforming Dreams Into Reality' }),
       ).toBeVisible();
 
       await page.getByLabel('lang-switcher').selectOption('fr');

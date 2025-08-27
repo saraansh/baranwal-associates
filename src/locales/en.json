@@ -114,7 +114,7 @@
   "Dashboard": {
     "meta_title": "Dashboard",
     "hello_message": "Hello, {email}!",
-    "alternative_message": "Welcome to our application. You can explore our <url>Next.js Boilerplate SaaS</url> for more features."
+    "alternative_message": "Welcome to our application. You can explore our <url>Baranwal Associates</url> for more features."
   },
   "SignIn": {
     "meta_title": "Sign In",

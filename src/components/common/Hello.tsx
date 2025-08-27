@@ -1,4 +1,5 @@
 import { currentUser } from '@clerk/nextjs/server';
+import Link from 'next/link';
 
 export const Hello = async () => {
   const user = await currentUser();
@@ -13,16 +14,16 @@ export const Hello = async () => {
         !
       </p>
       <p>
-        Welcome to our application. You can explore our
+        Welcome to Baranwal Associates. You can explore our
         {' '}
-        <a
+        <Link
           className="text-blue-700 hover:border-b-2 hover:border-blue-700"
-          href="https://nextjs-boilerplate.com/pro-saas-starter-kit"
+          href="/#projects"
         >
-          Next.js Boilerplate SaaS
-        </a>
+          architectural projects
+        </Link>
         {' '}
-        for more features.
+        and services.
       </p>
     </>
   );

@@ -121,8 +121,8 @@ This is a **Next.js 15** application built with **React 19**, **TypeScript**, an
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/saraansh/apbaranwal.git
-   cd apbaranwal
+   git clone https://github.com/saraansh/baranwal-associates.git
+   cd baranwal-associates
    ```
 
 2. **Install dependencies**

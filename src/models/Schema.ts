@@ -12,7 +12,8 @@ import { integer, pgTable, serial, text, timestamp, varchar } from 'drizzle-orm/
 // Alternatively, if your database is running, you can run `bun run db:migrate` and there is no need to restart the server.
 
 // Need a database for production? Check out https://www.prisma.io/?via=nextjsboilerplate
-// Tested and compatible with Next.js Boilerplate
+// Database connection utility for Baranwal Associates
+// Tested and compatible with Drizzle ORM
 
 export const counterSchema = pgTable('counter', {
   id: serial('id').primaryKey(),
