@@ -1,10 +1,10 @@
 version: 2
 updates:
-  # Enable version updates for npm
-  - package-ecosystem: npm
-    # Look for `package.json` and `lock` files in the root directory
+  # Enable version updates for bun
+  - package-ecosystem: bun
+    # Look for `package.json` and `bun.lockb` files in the root directory
     directory: /
-    # Check the npm registry for updates every month
+    # Check the bun registry for updates every month
     schedule:
       interval: monthly
       time: '06:00'
@@ -17,7 +17,7 @@ updates:
     # Group updates into a single pull request
     groups:
       # The name of the group (identifier)
-      npm-deps:
+      bun-deps:
         update-types: [minor, patch]
     # Only allow minor and patch updates
     ignore:
