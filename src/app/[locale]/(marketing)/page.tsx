@@ -1,14 +1,46 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import dynamic from 'next/dynamic';
+import { Suspense } from 'react';
 import { FloatingWhatsApp, PerformanceOptimizer, SEOOptimizer } from '@/components/common';
-import { AboutSection } from '@/components/sections/AboutSection';
-import { ContactSection } from '@/components/sections/ContactSection';
-import { FooterSection } from '@/components/sections/FooterSection';
+import { SectionLoader } from '@/components/common/SectionLoader';
 import { HeroSection } from '@/components/sections/HeroSection';
-import { ProjectsSection } from '@/components/sections/ProjectsSection';
-import { QuoteSection } from '@/components/sections/QuoteSection';
-import { ServicesSection } from '@/components/sections/ServicesSection';
-import { TestimonialsSection } from '@/components/sections/TestimonialsSection';
+
+// Lazy load all sections except Hero
+const AboutSection = dynamic(() => import('@/components/sections/AboutSection').then(mod => ({ default: mod.AboutSection })), {
+  loading: () => <SectionLoader height="min-h-[400px]" />,
+  ssr: true,
+});
+
+const ContactSection = dynamic(() => import('@/components/sections/ContactSection').then(mod => ({ default: mod.ContactSection })), {
+  loading: () => <SectionLoader height="min-h-[400px]" />,
+  ssr: true,
+});
+
+const FooterSection = dynamic(() => import('@/components/sections/FooterSection').then(mod => ({ default: mod.FooterSection })), {
+  loading: () => <SectionLoader height="min-h-[200px]" />,
+  ssr: true,
+});
+
+const ProjectsSection = dynamic(() => import('@/components/sections/ProjectsSection').then(mod => ({ default: mod.ProjectsSection })), {
+  loading: () => <SectionLoader height="min-h-[400px]" />,
+  ssr: true,
+});
+
+const QuoteSection = dynamic(() => import('@/components/sections/QuoteSection').then(mod => ({ default: mod.QuoteSection })), {
+  loading: () => <SectionLoader height="min-h-[300px]" />,
+  ssr: true,
+});
+
+const ServicesSection = dynamic(() => import('@/components/sections/ServicesSection').then(mod => ({ default: mod.ServicesSection })), {
+  loading: () => <SectionLoader height="min-h-[400px]" />,
+  ssr: true,
+});
+
+const TestimonialsSection = dynamic(() => import('@/components/sections/TestimonialsSection').then(mod => ({ default: mod.TestimonialsSection })), {
+  loading: () => <SectionLoader height="min-h-[400px]" />,
+  ssr: true,
+});
 
 type IIndexProps = {
   params: Promise<{ locale: string }>;
@@ -107,29 +139,37 @@ export default async function Index(props: IIndexProps) {
         preloadFonts={criticalFonts}
       />
 
-      {/* Hero Section */}
+      {/* Hero Section - Loaded immediately */}
       <HeroSection />
 
-      {/* About Section */}
-      <AboutSection />
+      {/* Lazy loaded sections with Suspense boundaries */}
+      <Suspense fallback={<SectionLoader height="min-h-[400px]" />}>
+        <AboutSection />
+      </Suspense>
 
-      {/* Services Section */}
-      <ServicesSection />
+      <Suspense fallback={<SectionLoader height="min-h-[400px]" />}>
+        <ServicesSection />
+      </Suspense>
 
-      {/* Testimonials Section */}
-      <TestimonialsSection />
+      <Suspense fallback={<SectionLoader height="min-h-[400px]" />}>
+        <TestimonialsSection />
+      </Suspense>
 
-      {/* Projects Section */}
-      <ProjectsSection />
+      <Suspense fallback={<SectionLoader height="min-h-[400px]" />}>
+        <ProjectsSection />
+      </Suspense>
 
-      {/* Contact Section */}
-      <ContactSection />
+      <Suspense fallback={<SectionLoader height="min-h-[400px]" />}>
+        <ContactSection />
+      </Suspense>
 
-      {/* Quote Section */}
-      <QuoteSection />
+      <Suspense fallback={<SectionLoader height="min-h-[300px]" />}>
+        <QuoteSection />
+      </Suspense>
 
-      {/* Footer Section */}
-      <FooterSection />
+      <Suspense fallback={<SectionLoader height="min-h-[200px]" />}>
+        <FooterSection />
+      </Suspense>
 
       {/* Floating WhatsApp Button */}
       <FloatingWhatsApp />

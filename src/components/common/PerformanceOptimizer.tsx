@@ -83,9 +83,13 @@ export function PerformanceOptimizer({
 
       if ('serviceWorker' in navigator) {
         try {
-          await navigator.serviceWorker.register('/sw.js');
+          // Check if service worker file exists before registering
+          const response = await fetch('/sw.js', { method: 'HEAD' });
+          if (response.ok) {
+            await navigator.serviceWorker.register('/sw.js');
+          }
         } catch {
-          // Service worker registration failed
+          // Service worker registration failed or file doesn't exist
         }
       }
     };

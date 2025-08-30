@@ -2,10 +2,16 @@
 
 import type { Project } from './projectsData';
 import { useLocale, useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import { ProjectCarousel } from './ProjectCarousel';
-import { ProjectModal } from './ProjectModal';
 import { getProjectsData } from './projectsData';
+
+// Lazy load ProjectModal only when needed
+const ProjectModal = dynamic(() => import('./ProjectModal').then(mod => ({ default: mod.ProjectModal })), {
+  loading: () => null, // No loading state needed since modal is only shown when clicked
+  ssr: false, // Disable SSR for modal since it's client-side only
+});
 
 export function ProjectsSection() {
   const t = useTranslations('Projects');
@@ -81,15 +87,17 @@ export function ProjectsSection() {
             onProjectClick={handleProjectClick}
           />
 
-          {/* Project Modal */}
-          <ProjectModal
-            project={selectedProject}
-            isOpen={isModalOpen}
-            onClose={handleCloseModal}
-            modalImageIndex={modalImageIndex}
-            nextModalImage={nextModalImage}
-            prevModalImage={prevModalImage}
-          />
+          {/* Project Modal - Only render when open */}
+          {isModalOpen && (
+            <ProjectModal
+              project={selectedProject}
+              isOpen={isModalOpen}
+              onClose={handleCloseModal}
+              modalImageIndex={modalImageIndex}
+              nextModalImage={nextModalImage}
+              prevModalImage={prevModalImage}
+            />
+          )}
         </div>
       </div>
     </section>

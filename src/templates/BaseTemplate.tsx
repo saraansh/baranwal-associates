@@ -1,5 +1,6 @@
 'use client';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 import { useState } from 'react';
 import { LocaleSwitcher, ThemeSwitcher } from '@/components/layout';
 import { Button } from '@/components/ui/button';
@@ -27,11 +28,14 @@ export const BaseTemplate = (props: {
           <div className="flex h-16 items-center justify-between">
             {/* Logo and Company Name */}
             <div className="flex items-center space-x-3">
-              <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg bg-primary">
-                <img
+              <div className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg border-2 border-border bg-primary shadow-sm transition-colors hover:border-primary/50">
+                <Image
                   src="/assets/images/logo.png"
                   alt={AppConfig.name}
-                  className="h-8 w-8 object-contain"
+                  fill
+                  className="object-contain p-1"
+                  sizes="40px"
+                  priority
                 />
               </div>
               <div>

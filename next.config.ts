@@ -124,9 +124,9 @@ const baseConfig: NextConfig = {
   experimental: {
     optimizeCss: true,
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
-    // Fix routes manifest issues
-    serverComponentsExternalPackages: [],
   },
+  // Fix routes manifest issues
+  serverExternalPackages: [],
   webpack: (config, { dev, isServer }) => {
     // Optimize bundle splitting
     if (!dev && !isServer) {
