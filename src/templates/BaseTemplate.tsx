@@ -3,7 +3,7 @@
 import { Building2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { LocaleSwitcher, ThemeToggleButton } from '@/components/layout';
+import { LocaleSwitcher, ThemeSwitcher } from '@/components/layout';
 import { Button } from '@/components/ui/button';
 import { AppConfig } from '@/utils/config';
 
@@ -105,7 +105,7 @@ export const BaseTemplate = (props: {
                 </>
               )}
 
-              <ThemeToggleButton />
+              <ThemeSwitcher />
 
               {/* Mobile Menu Button */}
               <button

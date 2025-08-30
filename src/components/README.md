@@ -24,7 +24,7 @@ ShadCN/UI components - Reusable UI components like buttons, forms, dialogs, etc.
 Layout-related components used across the application.
 - `ThemeProvider.tsx` - Theme context provider
 - `LocaleSwitcher.tsx` - Language switcher component
-- `ThemeToggleButton.tsx` - Dark/light mode toggle button
+- `ThemeSwitcher.tsx` - Dark/light mode toggle button
 
 ### `/common/`
 Common reusable components that can be used throughout the application.
