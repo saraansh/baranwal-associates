@@ -45,10 +45,10 @@ export function ContactInfo() {
       <CardContent>
         <div className="grid gap-6 md:grid-cols-3">
           {/* Contact Details */}
-          {contactInfo.map((info, index) => {
+          {contactInfo.map((info) => {
             const IconComponent = info.icon;
             return (
-              <div key={`contact-${info.label}-${index}`} className="flex items-center gap-4 rounded-lg bg-secondary/30 p-4 transition-all duration-300 hover:scale-105 hover:bg-secondary/50">
+              <div key={`contact-${info.label}`} className="flex items-center gap-4 rounded-lg bg-secondary/30 p-4 transition-all duration-300 hover:scale-105 hover:bg-secondary/50">
                 <div className={`rounded-full bg-gradient-to-br p-3 ${info.color} text-white transition-transform duration-300 hover:scale-110`}>
                   <IconComponent className="h-5 w-5" />
                 </div>

@@ -124,7 +124,7 @@ export function TestimonialsSection() {
 
           {/* Metrics Grid */}
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-            {metrics.map((metric, index) => {
+            {metrics.map((metric) => {
               const IconComponent = metric.icon;
               const getVariantColors = (variant: string) => {
                 switch (variant) {
@@ -163,7 +163,7 @@ export function TestimonialsSection() {
 
               return (
                 <div
-                  key={`metric-${metric.label}-${index}`}
+                  key={`metric-${metric.label}`}
                   className="group relative rounded-2xl border border-border bg-card p-8 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-primary/20"
                 >
                   {/* Animated background gradient */}

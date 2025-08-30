@@ -51,7 +51,7 @@ export function ServicesSection() {
 
           {/* Services Grid */}
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 lg:gap-8">
-            {services.map((service, index) => {
+            {services.map((service) => {
               const IconComponent = service.icon;
               const getVariantColors = (variant: string) => {
                 switch (variant) {
@@ -94,7 +94,7 @@ export function ServicesSection() {
 
               return (
                 <Card
-                  key={`service-${service.title}-${index}`}
+                  key={`service-${service.title}`}
                   className={`group relative overflow-hidden border-2 ${colors.border} ${colors.hover} cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-primary/20`}
                 >
                   {/* Animated background gradient */}

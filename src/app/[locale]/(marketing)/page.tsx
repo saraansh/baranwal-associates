@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { FloatingWhatsApp } from '@/components/common';
+import { FloatingWhatsApp, PerformanceOptimizer, SEOOptimizer } from '@/components/common';
 import { AboutSection } from '@/components/sections/AboutSection';
 import { ContactSection } from '@/components/sections/ContactSection';
 import { FooterSection } from '@/components/sections/FooterSection';
@@ -31,8 +31,34 @@ export default async function Index(props: IIndexProps) {
   const { locale } = await props.params;
   setRequestLocale(locale);
 
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://baranwalassociates.com';
+  const currentUrl = `${baseUrl}/${locale}`;
+
+  // Critical images to preload
+  const criticalImages = [
+    '/assets/images/hero-bg.jpg',
+    '/assets/images/logo.png',
+    '/assets/images/chief-architect.jpg',
+  ];
+
+  // Critical fonts to preload
+  const criticalFonts = [
+    'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap',
+  ];
+
   return (
     <>
+      <SEOOptimizer
+        pageType="homepage"
+        currentUrl={currentUrl}
+        locale={locale}
+      />
+
+      <PerformanceOptimizer
+        preloadImages={criticalImages}
+        preloadFonts={criticalFonts}
+      />
+
       {/* Hero Section */}
       <HeroSection />
 
