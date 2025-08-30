@@ -52,7 +52,7 @@ export function AboutSection() {
                   <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/30" />
                   <Avatar className="h-full w-full">
                     <AvatarImage
-                      src="/api/placeholder/320/320"
+                      src="/assets/images/chief-architect.jpg"
                       alt={t('chief_architect_name')}
                       className="object-cover"
                     />

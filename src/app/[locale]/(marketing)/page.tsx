@@ -50,14 +50,6 @@ export async function generateMetadata(props: IIndexProps): Promise<Metadata> {
       description: t('meta_description'),
       url: currentUrl,
       siteName: 'Baranwal Associates',
-      images: [
-        {
-          url: `${baseUrl}/assets/images/og-homepage.jpg`,
-          width: 1200,
-          height: 630,
-          alt: 'Baranwal Associates - Premier Architectural Design & Construction Services',
-        },
-      ],
       locale: locale === 'hi' ? 'hi_IN' : 'en_US',
       type: 'website',
     },
@@ -65,7 +57,6 @@ export async function generateMetadata(props: IIndexProps): Promise<Metadata> {
       card: 'summary_large_image',
       title: t('meta_title'),
       description: t('meta_description'),
-      images: [`${baseUrl}/assets/images/twitter-homepage.jpg`],
     },
     alternates: {
       canonical: currentUrl,
@@ -91,16 +82,16 @@ export default async function Index(props: IIndexProps) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://baranwalassociates.com';
   const currentUrl = `${baseUrl}/${locale}`;
 
-  // Critical images to preload
+  // Critical images to preload - optimized for mobile
   const criticalImages = [
-    '/assets/images/hero-bg.jpg',
-    '/assets/images/logo.png',
+    '/assets/images/hero-bg-mobile.jpg', // Mobile-optimized hero background
+    '/assets/images/logo-mobile.png', // Mobile-optimized logo
     '/assets/images/chief-architect.jpg',
   ];
 
-  // Critical fonts to preload
-  const criticalFonts = [
-    'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap',
+  // Critical fonts to preload - using system fonts instead of Google Fonts to avoid CSP issues
+  const criticalFonts: string[] = [
+    // Using system fonts to avoid CSP blocking
   ];
 
   return (

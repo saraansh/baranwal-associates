@@ -7,6 +7,7 @@ import { organizationSchema, StructuredData, websiteSchema } from '@/components/
 import { ThemeProvider } from '@/components/layout';
 import { routing } from '@/libs/I18nRouting';
 import '@/styles/global.css';
+import '@/styles/performance.css';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://baranwalassociates.com'),
@@ -48,20 +49,11 @@ export const metadata: Metadata = {
     siteName: 'Baranwal Associates',
     title: 'Baranwal Associates - Premier Architectural Design & Construction Services',
     description: 'Premier architectural design and construction services in Mumbai. We create exceptional spaces that blend functionality with aesthetic excellence.',
-    images: [
-      {
-        url: '/assets/images/og-image.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Baranwal Associates - Architectural Excellence',
-      },
-    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Baranwal Associates - Premier Architectural Design & Construction Services',
     description: 'Premier architectural design and construction services in Mumbai. We create exceptional spaces that blend functionality with aesthetic excellence.',
-    images: ['/assets/images/twitter-image.jpg'],
     creator: '@baranwalassociates',
   },
   robots: {

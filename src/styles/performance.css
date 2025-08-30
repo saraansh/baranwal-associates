@@ -1,0 +1,180 @@
+/* Performance Optimized CSS */
+
+/* Critical CSS for above-the-fold content */
+.critical-hidden {
+  opacity: 0;
+}
+
+.critical-visible {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+/* Optimize animations for better performance */
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out;
+  will-change: opacity;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Reduce layout shifts */
+img,
+video {
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: attr(width) / attr(height);
+}
+
+/* Optimize font loading */
+body {
+  font-display: swap;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Mobile-specific optimizations */
+@media (max-width: 768px) {
+  /* Reduce animation complexity on mobile */
+  * {
+    animation-duration: 0.3s !important;
+    transition-duration: 0.2s !important;
+  }
+
+  /* Optimize images for mobile */
+  img {
+    max-width: 100vw;
+    height: auto;
+  }
+
+  /* Reduce backdrop blur on mobile for performance */
+  .backdrop-blur-sm {
+    backdrop-filter: none;
+  }
+
+  /* Optimize text rendering */
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeSpeed;
+  }
+
+  /* Reduce box shadows on mobile */
+  .shadow-lg {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Optimize gradients for mobile */
+  .bg-gradient-to-br {
+    background: linear-gradient(135deg, var(--tw-gradient-stops));
+  }
+}
+
+/* GPU acceleration for animations */
+.animate-pulse,
+.animate-bounce {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Optimize lazy loading */
+img[loading='lazy'] {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+img[loading='lazy'].loaded {
+  opacity: 1;
+}
+
+/* Skeleton loading */
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Print optimizations */
+@media print {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .bg-primary {
+    background-color: #000 !important;
+  }
+
+  .text-primary {
+    color: #fff !important;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Dark mode optimizations */
+@media (prefers-color-scheme: dark) {
+  .skeleton {
+    background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
+  }
+}
+
+/* Focus indicators for accessibility */
+*:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Optimize for touch devices */
+@media (hover: none) and (pointer: coarse) {
+  /* Increase touch targets */
+  button,
+  a,
+  [role='button'] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Reduce hover effects on touch devices */
+  *:hover {
+    transform: none !important;
+  }
+}

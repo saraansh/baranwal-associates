@@ -1,6 +1,4 @@
 'use client';
-
-import { Building2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { LocaleSwitcher, ThemeSwitcher } from '@/components/layout';
@@ -14,7 +12,6 @@ export const BaseTemplate = (props: {
 }) => {
   const t = useTranslations('RootLayout');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -22,7 +19,6 @@ export const BaseTemplate = (props: {
     }
     setIsMobileMenuOpen(false);
   };
-
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Fixed Header */}
@@ -31,8 +27,12 @@ export const BaseTemplate = (props: {
           <div className="flex h-16 items-center justify-between">
             {/* Logo and Company Name */}
             <div className="flex items-center space-x-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
-                <Building2 className="h-6 w-6 text-primary-foreground" />
+              <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg bg-primary">
+                <img
+                  src="/assets/images/logo.png"
+                  alt={AppConfig.name}
+                  className="h-8 w-8 object-contain"
+                />
               </div>
               <div>
                 <h1 className="text-xl font-bold text-foreground">
@@ -43,7 +43,6 @@ export const BaseTemplate = (props: {
                 </p>
               </div>
             </div>
-
             {/* Desktop Navigation */}
             <nav className="hidden items-center space-x-8 md:flex">
               {props.leftNav || (
@@ -86,7 +85,6 @@ export const BaseTemplate = (props: {
                 </>
               )}
             </nav>
-
             {/* Right Side Controls */}
             <div className="flex items-center space-x-4">
               {props.rightNav || (
@@ -98,15 +96,12 @@ export const BaseTemplate = (props: {
                   >
                     {t('get_quote')}
                   </Button>
-
                   <div className="hidden sm:block">
                     <LocaleSwitcher />
                   </div>
                 </>
               )}
-
               <ThemeSwitcher />
-
               {/* Mobile Menu Button */}
               <button
                 type="button"
@@ -119,7 +114,6 @@ export const BaseTemplate = (props: {
               </button>
             </div>
           </div>
-
           {/* Mobile Navigation Menu */}
           {isMobileMenuOpen && (
             <div className="border-t border-border py-4 md:hidden">
@@ -182,11 +176,8 @@ export const BaseTemplate = (props: {
           )}
         </div>
       </header>
-
       {/* Main Content */}
-      <main className="pt-16">
-        {props.children}
-      </main>
+      <main className="pt-16">{props.children}</main>
     </div>
   );
 };
