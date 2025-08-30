@@ -1,11 +1,26 @@
 'use client';
 
-import { Building2, Calculator, Home, MapPin } from 'lucide-react';
+import { ArrowRight, Building2, Calculator, CheckCircle, Home, MapPin } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 export function ServicesSection() {
   const t = useTranslations('Services');
+
+  const scrollToContact = () => {
+    const element = document.getElementById('contact');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const scrollToProjects = () => {
+    const element = document.getElementById('projects');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   const services = [
     {
@@ -13,24 +28,28 @@ export function ServicesSection() {
       title: t('architectural.title'),
       description: t('architectural.description'),
       variant: 'primary' as const,
+      features: ['Concept Development', '3D Visualization', 'Construction Drawings', 'Site Supervision'],
     },
     {
       icon: Home,
       title: t('interior.title'),
       description: t('interior.description'),
       variant: 'accent' as const,
+      features: ['Space Planning', 'Material Selection', 'Furniture Design', 'Lighting Design'],
     },
     {
       icon: MapPin,
       title: t('planning.title'),
       description: t('planning.description'),
       variant: 'secondary' as const,
+      features: ['Site Analysis', 'Zoning Compliance', 'Master Planning', 'Sustainability'],
     },
     {
       icon: Calculator,
       title: t('valuation.title'),
       description: t('valuation.description'),
       variant: 'muted' as const,
+      features: ['Property Assessment', 'Market Analysis', 'Investment Advisory', 'Legal Compliance'],
     },
   ];
 
@@ -43,8 +62,11 @@ export function ServicesSection() {
             <h2 className="mb-4 text-3xl font-bold text-foreground md:text-4xl lg:text-5xl">
               {t('title')}
             </h2>
-            <p className="mx-auto mb-6 max-w-2xl text-lg text-muted-foreground md:text-xl">
+            <p className="mx-auto mb-6 max-w-3xl text-lg text-muted-foreground md:text-xl">
               {t('subtitle')}
+            </p>
+            <p className="mx-auto mb-6 max-w-4xl text-base text-muted-foreground">
+              Our comprehensive architectural services encompass every aspect of the design and construction process, from initial concept development to final project delivery. We combine innovative design solutions with practical expertise to create spaces that exceed expectations and stand the test of time.
             </p>
             <div className="mx-auto h-1 w-24 bg-primary" />
           </div>
@@ -120,9 +142,19 @@ export function ServicesSection() {
                   </CardHeader>
 
                   <CardContent className="relative z-10 pt-4">
-                    <CardDescription className="text-center leading-relaxed text-muted-foreground transition-colors duration-300 group-hover:text-foreground">
+                    <CardDescription className="mb-4 text-center leading-relaxed text-muted-foreground transition-colors duration-300 group-hover:text-foreground">
                       {service.description}
                     </CardDescription>
+
+                    {/* Service Features */}
+                    <div className="space-y-2">
+                      {service.features.map(feature => (
+                        <div key={`feature-${service.title}-${feature}`} className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <CheckCircle className="h-4 w-4 text-primary" />
+                          <span>{feature}</span>
+                        </div>
+                      ))}
+                    </div>
                   </CardContent>
 
                   {/* Hover overlay effect */}
@@ -133,6 +165,92 @@ export function ServicesSection() {
                 </Card>
               );
             })}
+          </div>
+
+          {/* Additional Content Section */}
+          <div className="mt-20 grid gap-8 lg:grid-cols-2">
+            <div className="space-y-6">
+              <h3 className="text-2xl font-bold text-foreground">
+                Why Choose Our Services?
+              </h3>
+              <div className="space-y-4">
+                <p className="text-muted-foreground">
+                  With over two decades of experience in the architectural industry, we have successfully completed hundreds of projects across Mumbai and surrounding areas. Our team combines creativity with technical expertise to deliver exceptional results.
+                </p>
+                <p className="text-muted-foreground">
+                  We understand that every project is unique, which is why we take a personalized approach to each assignment. From residential homes to commercial complexes, we ensure that our designs not only meet functional requirements but also reflect our clients' vision and lifestyle.
+                </p>
+                <p className="text-muted-foreground">
+                  Our commitment to sustainability and innovation sets us apart in the industry. We incorporate eco-friendly materials and energy-efficient design principles to create spaces that are both beautiful and environmentally responsible.
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              <h3 className="text-2xl font-bold text-foreground">
+                Our Process
+              </h3>
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
+                    1
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-foreground">Initial Consultation</h4>
+                    <p className="text-sm text-muted-foreground">Understanding your requirements and vision</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
+                    2
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-foreground">Concept Development</h4>
+                    <p className="text-sm text-muted-foreground">Creating initial design concepts and layouts</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
+                    3
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-foreground">Detailed Design</h4>
+                    <p className="text-sm text-muted-foreground">Finalizing designs and technical drawings</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
+                    4
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-foreground">Project Execution</h4>
+                    <p className="text-sm text-muted-foreground">Overseeing construction and quality control</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* CTA Section */}
+          <div className="mt-16 text-center">
+            <div className="mx-auto max-w-2xl space-y-6">
+              <h3 className="text-2xl font-bold text-foreground">
+                Ready to Start Your Project?
+              </h3>
+              <p className="text-muted-foreground">
+                Let's discuss your vision and create something extraordinary together. Our team is ready to bring your architectural dreams to life.
+              </p>
+              <div className="flex flex-col justify-center gap-4 sm:flex-row">
+                <Button onClick={scrollToContact} className="group">
+                  <span>Get Free Consultation</span>
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Button>
+                <Button onClick={scrollToProjects} variant="outline">
+                  <span>View Our Portfolio</span>
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Button>
+              </div>
+            </div>
           </div>
 
           {/* Bottom decorative elements */}

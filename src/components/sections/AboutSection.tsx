@@ -1,11 +1,27 @@
 'use client';
 
+import { ArrowRight, Award, Building, MapPin, Users } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 
 export function AboutSection() {
   const t = useTranslations('About');
+
+  const scrollToServices = () => {
+    const element = document.getElementById('services');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const scrollToProjects = () => {
+    const element = document.getElementById('projects');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <section id="about" className="pattern-grid bg-secondary/30 py-20 lg:py-32">
@@ -17,6 +33,9 @@ export function AboutSection() {
               {t('title')}
             </h2>
             <div className="mx-auto h-1 w-24 bg-primary" />
+            <p className="mx-auto mt-6 max-w-3xl text-lg text-muted-foreground">
+              Leading architectural excellence in Mumbai with over two decades of experience in creating innovative, sustainable, and functional spaces that transform the urban landscape.
+            </p>
           </div>
 
           {/* Main Content */}
@@ -61,10 +80,50 @@ export function AboutSection() {
                 </Badge>
               </div>
 
-              <div className="prose prose-lg max-w-none">
+              <div className="prose prose-lg max-w-none space-y-4">
                 <p className="text-lg leading-relaxed text-muted-foreground">
                   {t('chief_architect_message')}
                 </p>
+
+                <p className="text-base leading-relaxed text-muted-foreground">
+                  With a passion for innovative design and sustainable architecture, our team at Baranwal Associates has been at the forefront of transforming Mumbai's architectural landscape. We specialize in creating spaces that not only meet functional requirements but also inspire and enhance the quality of life for our clients.
+                </p>
+
+                <p className="text-base leading-relaxed text-muted-foreground">
+                  Our comprehensive approach encompasses everything from initial concept development to final construction supervision, ensuring that every project reflects our commitment to excellence, sustainability, and client satisfaction.
+                </p>
+              </div>
+
+              {/* Company Highlights */}
+              <div className="grid grid-cols-1 gap-4 pt-6">
+                <div className="flex items-center gap-3">
+                  <Award className="h-5 w-5 text-primary" />
+                  <span className="text-sm text-muted-foreground">Award-winning architectural firm in Mumbai</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Building className="h-5 w-5 text-primary" />
+                  <span className="text-sm text-muted-foreground">Specialized in residential and commercial projects</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <MapPin className="h-5 w-5 text-primary" />
+                  <span className="text-sm text-muted-foreground">Serving Mumbai and surrounding areas</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Users className="h-5 w-5 text-primary" />
+                  <span className="text-sm text-muted-foreground">Experienced team of architects and designers</span>
+                </div>
+              </div>
+
+              {/* CTA Buttons */}
+              <div className="flex flex-col gap-4 pt-6 sm:flex-row">
+                <Button onClick={scrollToServices} className="group">
+                  <span>Our Services</span>
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Button>
+                <Button onClick={scrollToProjects} variant="outline">
+                  <span>View Projects</span>
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Button>
               </div>
 
               {/* Stats */}
@@ -74,7 +133,7 @@ export function AboutSection() {
                     {t('experience_years')}
                   </div>
                   <div className="text-sm text-muted-foreground">
-                    Experience
+                    Years Experience
                   </div>
                 </div>
 
@@ -83,7 +142,7 @@ export function AboutSection() {
                     {t('projects_completed')}
                   </div>
                   <div className="text-sm text-muted-foreground">
-                    Projects
+                    Projects Completed
                   </div>
                 </div>
 
@@ -92,7 +151,7 @@ export function AboutSection() {
                     {t('client_satisfaction')}
                   </div>
                   <div className="text-sm text-muted-foreground">
-                    Satisfaction
+                    Client Satisfaction
                   </div>
                 </div>
 
@@ -101,7 +160,7 @@ export function AboutSection() {
                     {t('team_members')}
                   </div>
                   <div className="text-sm text-muted-foreground">
-                    Team Size
+                    Team Members
                   </div>
                 </div>
               </div>

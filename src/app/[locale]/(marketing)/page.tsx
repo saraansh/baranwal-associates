@@ -21,9 +21,66 @@ export async function generateMetadata(props: IIndexProps): Promise<Metadata> {
     namespace: 'Index',
   });
 
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://baranwalassociates.com';
+  const currentUrl = `${baseUrl}/${locale}`;
+
   return {
     title: t('meta_title'),
     description: t('meta_description'),
+    keywords: [
+      'architectural design Mumbai',
+      'construction services Mumbai',
+      'interior design Mumbai',
+      'urban planning Mumbai',
+      'property valuation Mumbai',
+      'residential architecture',
+      'commercial architecture',
+      'sustainable design',
+      'building design',
+      'construction company Mumbai',
+      'architectural firm Mumbai',
+      'design and build',
+      'project management',
+      'construction consultancy',
+      'Er. Anand Prakash Baranwal',
+      'Baranwal Associates',
+    ],
+    openGraph: {
+      title: t('meta_title'),
+      description: t('meta_description'),
+      url: currentUrl,
+      siteName: 'Baranwal Associates',
+      images: [
+        {
+          url: `${baseUrl}/assets/images/og-homepage.jpg`,
+          width: 1200,
+          height: 630,
+          alt: 'Baranwal Associates - Premier Architectural Design & Construction Services',
+        },
+      ],
+      locale: locale === 'hi' ? 'hi_IN' : 'en_US',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: t('meta_title'),
+      description: t('meta_description'),
+      images: [`${baseUrl}/assets/images/twitter-homepage.jpg`],
+    },
+    alternates: {
+      canonical: currentUrl,
+      languages: {
+        'en-US': `${baseUrl}/en`,
+        'hi-IN': `${baseUrl}/hi`,
+      },
+    },
+    other: {
+      'article:published_time': '2024-01-01T00:00:00.000Z',
+      'article:modified_time': new Date().toISOString(),
+      'article:author': 'Er. Anand Prakash Baranwal',
+      'article:section': 'Architecture',
+      'article:tag': ['Architecture', 'Design', 'Construction', 'Mumbai'],
+    },
   };
 }
 

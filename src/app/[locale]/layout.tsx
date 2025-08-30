@@ -118,6 +118,20 @@ export const metadata: Metadata = {
     'theme-color': '#0f172a',
     'msapplication-TileColor': '#0f172a',
     'msapplication-config': '/browserconfig.xml',
+    'viewport': 'width=device-width, initial-scale=1, maximum-scale=5',
+    'charset': 'utf-8',
+    'X-UA-Compatible': 'IE=edge',
+    'referrer': 'strict-origin-when-cross-origin',
+    'mobile-web-app-capable': 'yes',
+    'apple-mobile-web-app-capable': 'yes',
+    'apple-mobile-web-app-status-bar-style': 'default',
+    'apple-mobile-web-app-title': 'Baranwal Associates',
+    'application-name': 'Baranwal Associates',
+    'msapplication-TileImage': '/mstile-144x144.png',
+    'msapplication-square70x70logo': '/mstile-70x70.png',
+    'msapplication-square150x150logo': '/mstile-150x150.png',
+    'msapplication-wide310x150logo': '/mstile-310x150.png',
+    'msapplication-square310x310logo': '/mstile-310x310.png',
   },
 };
 
@@ -140,6 +154,20 @@ export default async function RootLayout(props: {
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="referrer" content="strict-origin-when-cross-origin" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Baranwal Associates" />
+        <meta name="application-name" content="Baranwal Associates" />
+        <meta name="msapplication-TileImage" content="/mstile-144x144.png" />
+        <meta name="msapplication-square70x70logo" content="/mstile-70x70.png" />
+        <meta name="msapplication-square150x150logo" content="/mstile-150x150.png" />
+        <meta name="msapplication-wide310x150logo" content="/mstile-310x150.png" />
+        <meta name="msapplication-square310x310logo" content="/mstile-310x310.png" />
         <StructuredData data={organizationSchema} />
         <StructuredData data={websiteSchema} />
       </head>
