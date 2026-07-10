@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [fable-dev]
+  pull_request:
+    branches: [fable-dev]
+
+env:
+  SUPABASE_URL: http://127.0.0.1:54321
+  SUPABASE_ANON_KEY: ci-placeholder-key
+  SESSION_SECRET: ci-secret-0123456789abcdef
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run test
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test --project=chromium
+      - uses: actions/upload-artifact@v5
+        if: failure()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
