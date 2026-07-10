@@ -3,8 +3,11 @@ import { createRequestHandler } from "@react-router/express";
 import express from "express";
 
 import { valueFromExpressContext } from "~/context";
+import { apiRouter } from "./api/index";
 
 export const app = express();
+
+app.use("/api", apiRouter);
 
 app.use(
   createRequestHandler({
