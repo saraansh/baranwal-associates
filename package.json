@@ -12,6 +12,8 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1085.0",
+    "@aws-sdk/s3-request-presigner": "^3.1085.0",
     "@react-router/express": "8.0.0",
     "@react-router/node": "8.0.0",
     "@supabase/ssr": "^0.12.0",
@@ -27,6 +29,7 @@
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "react-router": "8.0.0",
+    "three": "^0.185.1",
     "zod": "^4.4.3"
   },
   "devDependencies": {
@@ -44,6 +47,7 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@types/supertest": "^7.2.0",
+    "@types/three": "^0.185.1",
     "cross-env": "^10.0.0",
     "happy-dom": "^20.10.6",
     "supertest": "^7.2.2",
