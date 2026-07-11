@@ -1,8 +1,12 @@
+import { useState } from "react";
 import { data, Form, Link, useFetcher } from "react-router";
 import { z } from "zod";
 
 import type { Route } from "./+types/project";
+import { ModelViewer } from "~/components/model-viewer";
+import { UploadVersion } from "~/components/upload-version";
 import { isStaff, requireUser } from "~/lib/auth.server";
+import { getDownloadUrl } from "~/lib/files.client";
 
 export function meta({ loaderData }: Route.MetaArgs) {
   return [
@@ -42,7 +46,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     supabase
       .from("drawings")
       .select(
-        "id, title, kind, drawing_versions(id, version_no, original_filename, notes, approval, preview_kind, created_at)",
+        "id, title, kind, drawing_versions(id, version_no, original_filename, original_key, preview_kind, preview_key, notes, approval, created_at)",
       )
       .eq("project_id", project.id),
     supabase
@@ -81,6 +85,26 @@ const actionSchema = z.discriminatedUnion("intent", [
     intent: z.literal("new-thread"),
     title: z.string().trim().min(2),
   }),
+  z.object({
+    intent: z.literal("add-drawing"),
+    title: z.string().trim().min(2),
+    kind: z.enum(["dwg_2d", "sketchup_3d", "max_3d", "image", "document"]),
+  }),
+  z.object({
+    intent: z.literal("set-approval"),
+    versionId: z.guid(),
+    approval: z.enum(["pending", "approved", "changes_requested"]),
+  }),
+  z.object({
+    intent: z.literal("add-version"),
+    drawingId: z.guid(),
+    originalKey: z.string().min(1),
+    originalFilename: z.string().min(1),
+    sizeBytes: z.coerce.number().nonnegative(),
+    previewKind: z.enum(["gltf", "pdf", "image", "none"]),
+    previewKey: z.string(),
+    notes: z.string(),
+  }),
 ]);
 
 export async function action({ request, params }: Route.ActionArgs) {
@@ -93,7 +117,10 @@ export async function action({ request, params }: Route.ActionArgs) {
   const input = parsed.data;
   const staff = isStaff(profile);
 
-  if (input.intent !== "new-thread" && !staff) {
+  // Threads, drawings and versions are open to project members too — RLS
+  // enforces membership. The rest is staff-only.
+  const memberAllowed = ["new-thread", "add-drawing", "add-version"];
+  if (!memberAllowed.includes(input.intent) && !staff) {
     return data({ error: "Not allowed" }, { status: 403, headers });
   }
 
@@ -129,6 +156,46 @@ export async function action({ request, params }: Route.ActionArgs) {
       if (error) return data({ error: error.message }, { status: 500, headers });
       break;
     }
+    case "set-approval": {
+      const { error } = await supabase
+        .from("drawing_versions")
+        .update({ approval: input.approval })
+        .eq("id", input.versionId);
+      if (error) return data({ error: error.message }, { status: 500, headers });
+      break;
+    }
+    case "add-drawing": {
+      const { error } = await supabase.from("drawings").insert({
+        project_id: params.id,
+        title: input.title,
+        kind: input.kind,
+        created_by: profile.id,
+      });
+      if (error) return data({ error: error.message }, { status: 500, headers });
+      break;
+    }
+    case "add-version": {
+      const { data: latest } = await supabase
+        .from("drawing_versions")
+        .select("version_no")
+        .eq("drawing_id", input.drawingId)
+        .order("version_no", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      const { error } = await supabase.from("drawing_versions").insert({
+        drawing_id: input.drawingId,
+        version_no: (latest?.version_no ?? 0) + 1,
+        original_key: input.originalKey,
+        original_filename: input.originalFilename,
+        original_size_bytes: input.sizeBytes,
+        preview_kind: input.previewKind,
+        preview_key: input.previewKey || null,
+        notes: input.notes,
+        uploaded_by: profile.id,
+      });
+      if (error) return data({ error: error.message }, { status: 500, headers });
+      break;
+    }
     case "new-thread": {
       const { data: thread, error } = await supabase
         .from("threads")
@@ -145,6 +212,143 @@ export async function action({ request, params }: Route.ActionArgs) {
     }
   }
   return data({ ok: true }, { headers });
+}
+
+interface VersionInfo {
+  id: string;
+  version_no: number;
+  original_filename: string;
+  original_key: string;
+  preview_kind: string;
+  preview_key: string | null;
+  notes: string;
+  approval: string;
+  created_at: string;
+}
+
+/** One drawing version: notes, approval, preview (3D/PDF/image), download. */
+function VersionRow({
+  version: v,
+  staff,
+}: {
+  version: VersionInfo;
+  staff: boolean;
+}) {
+  const fetcher = useFetcher();
+  const [viewerUrl, setViewerUrl] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+
+  async function openPreview() {
+    if (!v.preview_key) return;
+    setBusy(true);
+    // Open the tab synchronously (inside the click) — async window.open is
+    // popup-blocked.
+    const tab = v.preview_kind === "gltf" ? null : window.open("", "_blank");
+    try {
+      const url = await getDownloadUrl(v.preview_key);
+      if (v.preview_kind === "gltf") setViewerUrl(url);
+      else if (tab) tab.location.href = url;
+    } catch {
+      tab?.close();
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function download() {
+    setBusy(true);
+    try {
+      const url = await getDownloadUrl(v.original_key, v.original_filename);
+      // Anchor click, not window.open: survives popup blockers, and the
+      // presigned URL's content-disposition makes it a download.
+      const a = document.createElement("a");
+      a.href = url;
+      a.rel = "noopener";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <li className="py-2.5 text-sm">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+        <span className="annotation w-8 shrink-0">v{v.version_no}</span>
+        <span className="min-w-0 flex-1 truncate text-muted">
+          {v.notes || v.original_filename}
+        </span>
+        {staff ? (
+          <fetcher.Form method="post" className="shrink-0">
+            <input type="hidden" name="intent" value="set-approval" />
+            <input type="hidden" name="versionId" value={v.id} />
+            <select
+              name="approval"
+              defaultValue={v.approval}
+              onChange={(e) => fetcher.submit(e.currentTarget.form)}
+              className="annotation cursor-pointer border-b border-line bg-transparent py-0.5"
+            >
+              <option value="pending">pending</option>
+              <option value="approved">approved</option>
+              <option value="changes_requested">changes requested</option>
+            </select>
+          </fetcher.Form>
+        ) : (
+          <span
+            className={`annotation shrink-0 ${v.approval === "approved" ? "!text-accent" : ""}`}
+          >
+            {v.approval.replace("_", " ")}
+          </span>
+        )}
+        <span className="flex shrink-0 gap-3">
+          {v.preview_key && (
+            <button
+              type="button"
+              disabled={busy}
+              onClick={openPreview}
+              className="annotation !text-accent underline-offset-4 hover:underline disabled:opacity-50"
+            >
+              {v.preview_kind === "gltf"
+                ? "view 3D"
+                : v.preview_kind === "pdf"
+                  ? "view PDF"
+                  : "view"}
+            </button>
+          )}
+          <button
+            type="button"
+            disabled={busy}
+            onClick={download}
+            className="annotation underline-offset-4 hover:text-accent hover:underline disabled:opacity-50"
+          >
+            download
+          </button>
+        </span>
+      </div>
+
+      {viewerUrl && (
+        <div className="mt-3">
+          <div className="flex items-center justify-between">
+            <p className="annotation">
+              {v.original_filename} — v{v.version_no}
+            </p>
+            <button
+              type="button"
+              onClick={() => setViewerUrl(null)}
+              className="text-sm text-muted hover:text-ink"
+            >
+              Close ✕
+            </button>
+          </div>
+          <ModelViewer
+            url={viewerUrl}
+            className="mt-2 h-96 w-full rounded-sm border border-line"
+          />
+        </div>
+      )}
+    </li>
+  );
 }
 
 const KIND_LABELS: Record<string, string> = {
@@ -287,54 +491,65 @@ export default function Project({ loaderData }: Route.ComponentProps) {
         {/* Drawings */}
         <section className="lg:col-span-7">
           <h2 className="annotation">Drawings & versions</h2>
-          {drawings.length === 0 ? (
+          {drawings.length === 0 && (
             <p className="mt-4 rounded-sm border border-line p-6 text-sm text-muted">
               No drawings uploaded yet.
             </p>
-          ) : (
-            <div className="mt-4 space-y-6">
-              {drawings.map((d) => (
-                <div key={d.id} className="rounded-sm border border-line p-5">
-                  <div className="flex items-baseline justify-between gap-4">
-                    <h3 className="font-display text-xl font-light">
-                      {d.title}
-                    </h3>
-                    <span className="annotation">
-                      {KIND_LABELS[d.kind] ?? d.kind}
-                    </span>
-                  </div>
-                  <ul className="mt-3 divide-y divide-line">
-                    {[...(d.drawing_versions ?? [])]
-                      .sort((a, b) => b.version_no - a.version_no)
-                      .map((v) => (
-                        <li
-                          key={v.id}
-                          className="flex items-center gap-4 py-2.5 text-sm"
-                        >
-                          <span className="annotation w-8 shrink-0">
-                            v{v.version_no}
-                          </span>
-                          <span className="min-w-0 flex-1 truncate text-muted">
-                            {v.notes || v.original_filename}
-                          </span>
-                          <span
-                            className={`annotation shrink-0 ${
-                              v.approval === "approved"
-                                ? "!text-accent"
-                                : v.approval === "changes_requested"
-                                  ? ""
-                                  : ""
-                            }`}
-                          >
-                            {v.approval.replace("_", " ")}
-                          </span>
-                        </li>
-                      ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
           )}
+          <div className="mt-4 space-y-6">
+            {drawings.map((d) => (
+              <div key={d.id} className="rounded-sm border border-line p-5">
+                <div className="flex items-baseline justify-between gap-4">
+                  <h3 className="font-display text-xl font-light">{d.title}</h3>
+                  <span className="annotation">
+                    {KIND_LABELS[d.kind] ?? d.kind}
+                  </span>
+                </div>
+                <ul className="mt-3 divide-y divide-line">
+                  {[...(d.drawing_versions ?? [])]
+                    .sort((a, b) => b.version_no - a.version_no)
+                    .map((v) => (
+                      <VersionRow key={v.id} version={v} staff={staff} />
+                    ))}
+                </ul>
+                <div className="mt-3">
+                  <UploadVersion projectId={project.id} drawingId={d.id} />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <Form
+            method="post"
+            className="mt-6 flex flex-wrap items-end gap-3 rounded-sm border border-dashed border-line p-4"
+          >
+            <input type="hidden" name="intent" value="add-drawing" />
+            <div className="min-w-40 flex-1">
+              <label htmlFor="drawing-title" className="annotation mb-1 block">
+                New drawing set
+              </label>
+              <input
+                id="drawing-title"
+                name="title"
+                required
+                className="field-input"
+                placeholder="e.g. Electrical layout"
+              />
+            </div>
+            <select name="kind" className="field-input w-40">
+              <option value="dwg_2d">AutoCAD 2D</option>
+              <option value="sketchup_3d">SketchUp 3D</option>
+              <option value="max_3d">3ds Max</option>
+              <option value="image">Image</option>
+              <option value="document">Document</option>
+            </select>
+            <button
+              type="submit"
+              className="rounded-full border border-line px-4 py-1.5 text-sm hover:border-accent hover:text-accent"
+            >
+              Add
+            </button>
+          </Form>
 
           {/* Threads */}
           <h2 className="annotation mt-10">Conversations</h2>

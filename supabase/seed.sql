@@ -38,6 +38,11 @@ values
    crypt('password123', gen_salt('bf')), now(),
    '{"provider":"email","providers":["email"]}', '{"full_name":"Sunil Jaiswal"}', now(), now());
 
+-- Local stand-in for the R2 bucket (see supabase/config.toml).
+insert into storage.buckets (id, name, public)
+values ('baranwal-associates', 'baranwal-associates', false)
+on conflict (id) do nothing;
+
 -- GoTrue scans these as strings; NULLs break password sign-in.
 update auth.users set
   confirmation_token = '', recovery_token = '',
