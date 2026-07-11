@@ -45,6 +45,28 @@ export async function action({ request }: Route.ActionArgs) {
       message: parsed.data.message,
     });
     if (error) throw error;
+
+    const { trackEvent } = await import("~/lib/telemetry.server");
+    trackEvent("enquiry.submitted", { source: "website" });
+
+    // Email notification via Resend, when configured.
+    const { env } = await import("~/lib/env.server");
+    const e = env();
+    if (e.RESEND_API_KEY && e.CONTACT_NOTIFY_EMAIL) {
+      void fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${e.RESEND_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          from: "Website <onboarding@resend.dev>",
+          to: [e.CONTACT_NOTIFY_EMAIL],
+          subject: `New enquiry from ${parsed.data.name}`,
+          text: `${parsed.data.name} <${parsed.data.email}> ${parsed.data.phone ?? ""}\n\n${parsed.data.message}`,
+        }),
+      }).catch((err) => console.error("Resend notify failed:", err));
+    }
   } catch (e) {
     console.error("Enquiry insert failed:", e);
     return data(

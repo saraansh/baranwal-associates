@@ -24,7 +24,16 @@ test.describe("AI interior visualizer", () => {
     await signIn(page, "neha.khanna@example.com");
     await page.goto("/portal/visualizer");
 
-    const before = await readBalance(page);
+    // Self-funding: repeated suite runs drain the seed user's trial and
+    // credits — top up through the mock checkout when broke.
+    let before = await readBalance(page);
+    if (before === 0) {
+      await page.getByRole("button", { name: /\+5 · ₹/ }).click();
+      await expect
+        .poll(() => readBalance(page), { timeout: 15_000 })
+        .toBe(5);
+      before = 5;
+    }
     // force: mobile emulation's visual-viewport offset breaks hit-testing;
     // the aria-checked assertion below proves the tap registered.
     const chip = page.getByRole("radio", { name: "Modern Minimal" });

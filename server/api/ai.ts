@@ -265,6 +265,13 @@ aiRouter.post("/generate", async (req, res) => {
     });
   }
 
+  const { trackEvent } = await import("~/lib/telemetry.server");
+  trackEvent(
+    "ai.generation",
+    { model: usedModel, isTrial, presets: Object.keys(presets) },
+    user.id,
+  );
+
   const { data: balanceAfter } = await svc.rpc("credit_balance", {
     p_user: user.id,
   });
