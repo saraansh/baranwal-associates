@@ -45,6 +45,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* Keep programmatic/anchor scrolls clear of the sticky headers. */
+  scroll-padding-top: 5rem;
 }
 
 body {

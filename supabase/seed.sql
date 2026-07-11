@@ -38,6 +38,24 @@ values
    crypt('password123', gen_salt('bf')), now(),
    '{"provider":"email","providers":["email"]}', '{"full_name":"Sunil Jaiswal"}', now(), now());
 
+-- GoTrue scans these as strings; NULLs break password sign-in.
+update auth.users set
+  confirmation_token = '', recovery_token = '',
+  email_change = '', email_change_token_new = '',
+  email_change_token_current = '', phone_change = '',
+  phone_change_token = '', reauthentication_token = ''
+where email like '%@example.com';
+
+-- GoTrue requires an identities row per user for password sign-in.
+insert into auth.identities
+  (id, user_id, identity_data, provider, provider_id, last_sign_in_at, created_at, updated_at)
+select
+  gen_random_uuid(), u.id,
+  jsonb_build_object('sub', u.id::text, 'email', u.email, 'email_verified', true),
+  'email', u.id::text, now(), now(), now()
+from auth.users u
+where u.email like '%@example.com';
+
 update public.profiles set role = 'system_admin', phone = '+91 94152 45083'
   where id = '11111111-1111-1111-1111-111111111111';
 update public.profiles set role = 'employee'
