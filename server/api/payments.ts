@@ -191,6 +191,12 @@ paymentsRouter.post(
     p_payment: payment.id,
     p_credits: input.credits,
   });
+    const { trackEvent } = await import("~/lib/telemetry.server");
+    trackEvent(
+      "payment.paid",
+      { method: "razorpay", credits: input.credits },
+      req.user!.id,
+    );
     const { data: balance } = await svc.rpc("credit_balance", {
       p_user: req.user!.id,
     });

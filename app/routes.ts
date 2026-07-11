@@ -31,6 +31,14 @@ export default [
     route("portal/settings", "routes/portal/settings.tsx"),
   ]),
 
+  layout("routes/admin/layout.tsx", [
+    route("admin", "routes/admin/overview.tsx"),
+    route("admin/events", "routes/admin/events.tsx"),
+    route("admin/logs", "routes/admin/logs.tsx"),
+    route("admin/jobs", "routes/admin/jobs.tsx"),
+    route("admin/settings", "routes/admin/settings.tsx"),
+  ]),
+
   route("resources/theme", "routes/resources/theme.ts"),
   route("sitemap.xml", "routes/resources/sitemap.ts"),
   route("robots.txt", "routes/resources/robots.ts"),

@@ -1,86 +1,62 @@
-# Welcome to React Router!
+# Baranwal Associates
 
-A modern, production-ready template for building full-stack React applications using React Router.
+Full platform for the architecture firm — public portfolio + client portal +
+AI interior visualizer. React Router v7 (framework mode, SSR) on a custom
+Express server, Supabase (Postgres/Auth/Realtime), Cloudflare R2 storage,
+OpenAI, Razorpay.
 
-## Features
+- **Design brief & research:** [docs/RESEARCH.md](docs/RESEARCH.md)
+- **Deployment:** [docs/DEPLOY.md](docs/DEPLOY.md)
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+## What's inside
 
-## Getting Started
+| Area | Highlights |
+|---|---|
+| Public site | SSR portfolio/journal/contact, light/dark/system themes, PWA, JSON-LD + sitemap SEO |
+| Auth | Google OAuth (PKCE), optional TOTP 2FA, role-based access (system_admin / employee / accountant / collaborator / client) with Postgres RLS |
+| Portal | Projects, milestones, progress, realtime chat with attachments, tokenized invites |
+| Drawings | Presigned R2 uploads, versioning with approvals, **client-side OBJ/FBX/DAE/STL → glTF** with pre-upload 3D preview, PDF previews for 2D CAD |
+| AI visualizer | ChatGPT-style room redesign with Indian-localized presets, 2 free trials, credit packs via Razorpay or accountant-recorded cash |
+| Admin console | Health, metrics, telemetry events, request logs, pg-boss job monitor, runtime settings editor |
 
-### Installation
+## Local development
 
-Install the dependencies:
+Prereqs: Node 24+, Docker Desktop, [Supabase CLI](https://supabase.com/docs/guides/cli).
 
 ```bash
+cp .env.example .env          # fill values printed by `supabase start`
+supabase start                # local Postgres + Auth + Storage (Docker)
+supabase db reset             # apply migrations + demo seed
 npm install
+npm run dev                   # http://localhost:3000
 ```
 
-### Development
+The demo seed creates users for every role, all with password `password123`
+(dev-only password login is enabled outside production):
 
-Start the development server with HMR:
+| Role | Email |
+|---|---|
+| System admin | saraansh.baranwal@example.com |
+| Architect | priya.srivastava@example.com |
+| Accountant | manoj.gupta@example.com |
+| Collaborator | alok.verma@example.com |
+| Clients | ramesh.agarwal / neha.khanna / sunil.jaiswal @example.com |
+
+Without `OPENAI_API_KEY`/Razorpay keys, the visualizer and checkout run in
+mock mode locally so every flow stays testable.
+
+## Scripts
 
 ```bash
-npm run dev
+npm run dev        # dev server (Vite middleware + Express)
+npm run build      # production build
+npm start          # run the production build
+npm run typecheck  # route typegen + tsc
+npm test           # unit/API tests (Vitest)
+npm run test:e2e   # Playwright suite (desktop + mobile)
 ```
 
-Your application will be available at `http://localhost:5173`.
+## Branching
 
-## Building for Production
-
-Create a production build:
-
-```bash
-npm run build
-```
-
-## Deployment
-
-### Docker Deployment
-
-To build and run using Docker:
-
-```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
-```
-
-The containerized application can be deployed to any platform that supports Docker, including:
-
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── server.js
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
-
----
-
-Built with ❤️ using React Router.
+Active development happens on `fable-dev` via feature-branch PRs. The
+legacy site lives on `main`.
