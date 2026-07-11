@@ -1,8 +1,10 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { data, Link, useFetcher, useRevalidator, useRouteLoaderData } from "react-router";
 
 import type { Route } from "./+types/thread";
+import { AttachmentImage, AttachmentLink } from "~/components/attachment";
 import { requireUser } from "~/lib/auth.server";
+import { presignAndUpload } from "~/lib/files.client";
 import { getSupabaseBrowserClient } from "~/lib/supabase.client";
 import type { loader as rootLoader } from "~/root";
 
@@ -37,14 +39,38 @@ export async function action({ request, params }: Route.ActionArgs) {
   const { profile, supabase, headers } = await requireUser(request);
   const form = await request.formData();
   const body = form.get("body")?.toString().trim();
-  if (!body) return data({ error: "Empty message" }, { status: 400, headers });
+  const attachmentKey = form.get("attachmentKey")?.toString();
+  const attachmentName = form.get("attachmentName")?.toString();
+  const attachmentMime = form.get("attachmentMime")?.toString();
 
-  const { error } = await supabase.from("messages").insert({
-    thread_id: params.id,
-    sender_id: profile.id,
-    body,
-  });
+  if (!body && !attachmentKey) {
+    return data({ error: "Empty message" }, { status: 400, headers });
+  }
+
+  const { data: message, error } = await supabase
+    .from("messages")
+    .insert({
+      thread_id: params.id,
+      sender_id: profile.id,
+      body: body ?? "",
+    })
+    .select("id")
+    .single();
   if (error) return data({ error: error.message }, { status: 500, headers });
+
+  if (attachmentKey && attachmentName) {
+    const { error: attachError } = await supabase
+      .from("message_attachments")
+      .insert({
+        message_id: message.id,
+        storage_key: attachmentKey,
+        filename: attachmentName,
+        mime_type: attachmentMime ?? "application/octet-stream",
+      });
+    if (attachError) {
+      return data({ error: attachError.message }, { status: 500, headers });
+    }
+  }
   return data({ ok: true }, { headers });
 }
 
@@ -89,6 +115,34 @@ export default function Thread({ loaderData }: Route.ComponentProps) {
   }, [fetcher.state, fetcher.data]);
 
   const project = thread.projects as { name?: string } | null;
+  const [pending, setPending] = useState<{
+    key: string;
+    name: string;
+    mime: string;
+  } | null>(null);
+  const [attaching, setAttaching] = useState(false);
+
+  async function attach(file: File) {
+    if (!thread.project_id) return;
+    setAttaching(true);
+    try {
+      const key = await presignAndUpload(
+        thread.project_id,
+        file,
+        file.name,
+        "attachment",
+      );
+      setPending({
+        key,
+        name: file.name,
+        mime: file.type || "application/octet-stream",
+      });
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setAttaching(false);
+    }
+  }
 
   return (
     <main className="mx-auto flex h-[calc(100vh-8.5rem)] max-w-3xl flex-col">
@@ -137,11 +191,21 @@ export default function Thread({ loaderData }: Route.ComponentProps) {
               >
                 {m.body}
                 {(m.message_attachments ?? []).map(
-                  (a: { id: string; filename: string }) => (
-                    <p key={a.id} className="mt-2 text-xs underline">
-                      📎 {a.filename}
-                    </p>
-                  ),
+                  (a: {
+                    id: string;
+                    filename: string;
+                    storage_key: string;
+                    mime_type: string;
+                  }) =>
+                    a.mime_type.startsWith("image/") ? (
+                      <AttachmentImage key={a.id} storageKey={a.storage_key} />
+                    ) : (
+                      <AttachmentLink
+                        key={a.id}
+                        storageKey={a.storage_key}
+                        filename={a.filename}
+                      />
+                    ),
                 )}
               </div>
             </div>
@@ -153,13 +217,39 @@ export default function Thread({ loaderData }: Route.ComponentProps) {
       <fetcher.Form
         ref={formRef}
         method="post"
+        onSubmit={() => setPending(null)}
         className="flex items-end gap-3 border-t border-line pt-4"
       >
+        {pending && (
+          <>
+            <input type="hidden" name="attachmentKey" value={pending.key} />
+            <input type="hidden" name="attachmentName" value={pending.name} />
+            <input type="hidden" name="attachmentMime" value={pending.mime} />
+          </>
+        )}
+        {thread.project_id && (
+          <label
+            className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-full border border-line text-muted transition-colors hover:border-accent hover:text-accent"
+            title="Attach a file"
+          >
+            {attaching ? "…" : "📎"}
+            <input
+              type="file"
+              className="hidden"
+              accept="image/*,.pdf,.dwg,.dxf,.skp,.obj,.fbx,.dae,.glb,.gltf"
+              onChange={(e) =>
+                e.target.files?.[0] && void attach(e.target.files[0])
+              }
+            />
+          </label>
+        )}
         <textarea
           name="body"
-          required
+          required={!pending}
           rows={2}
-          placeholder="Write a message…"
+          placeholder={
+            pending ? `📎 ${pending.name} — add a note…` : "Write a message…"
+          }
           className="field-input flex-1 resize-none rounded-sm border border-line px-3 py-2"
           onKeyDown={(e) => {
             if (e.key === "Enter" && !e.shiftKey) {

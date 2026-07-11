@@ -7,10 +7,10 @@ export function fileExt(name: string) {
 }
 
 export async function presignAndUpload(
-  projectId: string,
+  projectId: string | null,
   file: File | Blob,
   filename: string,
-  purpose: "original" | "preview" | "attachment",
+  purpose: "original" | "preview" | "attachment" | "ai-input",
 ): Promise<string> {
   const contentType =
     file instanceof File && file.type ? file.type : "application/octet-stream";
@@ -18,7 +18,7 @@ export async function presignAndUpload(
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      projectId,
+      ...(projectId ? { projectId } : {}),
       filename,
       contentType,
       sizeBytes: file.size,

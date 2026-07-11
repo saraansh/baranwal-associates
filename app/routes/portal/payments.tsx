@@ -38,6 +38,7 @@ const cashSchema = z.object({
   user_id: z.guid(),
   amount_inr: z.coerce.number().positive(),
   notes: z.string().trim().min(3, "Add a receipt no. / description"),
+  grant_credits: z.coerce.number().int().min(0).max(1000).default(0),
 });
 
 export async function action({ request }: Route.ActionArgs) {
@@ -55,15 +56,30 @@ export async function action({ request }: Route.ActionArgs) {
     );
   }
 
-  const { error } = await supabase.from("payments").insert({
-    user_id: parsed.data.user_id,
-    amount_inr: parsed.data.amount_inr,
-    method: "cash",
-    status: "paid",
-    recorded_by: profile.id,
-    notes: parsed.data.notes,
-  });
+  const { data: payment, error } = await supabase
+    .from("payments")
+    .insert({
+      user_id: parsed.data.user_id,
+      amount_inr: parsed.data.amount_inr,
+      method: "cash",
+      status: "paid",
+      recorded_by: profile.id,
+      notes: parsed.data.notes,
+    })
+    .select("id")
+    .single();
   if (error) return data({ error: error.message }, { status: 500, headers });
+
+  // Cash can also buy visualizer credits — same idempotent grant as Razorpay.
+  if (parsed.data.grant_credits > 0) {
+    const { error: grantError } = await supabase.rpc(
+      "grant_credits_for_payment",
+      { p_payment: payment.id, p_credits: parsed.data.grant_credits },
+    );
+    if (grantError) {
+      return data({ error: grantError.message }, { status: 500, headers });
+    }
+  }
   return data({ ok: true }, { headers });
 }
 
@@ -173,6 +189,22 @@ export default function Payments({
                   required
                   className="field-input"
                   placeholder="RCPT-2026-021 — design fee instalment"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="grant_credits"
+                  className="annotation mb-1 block"
+                >
+                  Grant visualizer credits (optional)
+                </label>
+                <input
+                  id="grant_credits"
+                  name="grant_credits"
+                  type="number"
+                  min="0"
+                  defaultValue="0"
+                  className="field-input"
                 />
               </div>
               {error && <p className="text-sm text-accent">{error}</p>}

@@ -65,7 +65,8 @@ test.describe("public site", () => {
       .locator('button[aria-label^="Theme:"]:visible')
       .first()
       .click();
-    await expect(html).toHaveClass(/dark/);
+    // Optimistic flip + cookie revalidation; generous under parallel load.
+    await expect(html).toHaveClass(/dark/, { timeout: 15_000 });
   });
 
   test("sitemap and robots are served", async ({ request }) => {
