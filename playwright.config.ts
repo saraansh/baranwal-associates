@@ -9,6 +9,9 @@ export default defineConfig({
   use: {
     baseURL: "http://localhost:3000",
     trace: "on-first-retry",
+    // Smooth scrolling races Playwright's hit-target checks; our CSS
+    // honours prefers-reduced-motion and falls back to instant scrolls.
+    reducedMotion: "reduce",
   },
   projects: [
     { name: "chromium", use: { ...devices["Desktop Chrome"] } },
